@@ -19,6 +19,8 @@ else
     rabbitmqctl wait /var/lib/rabbitmq/mnesia/rabbit\@$HOSTNAME.pid
     rabbitmqctl stop_app
     rabbitmqctl join_cluster rabbit@$JOIN_CLUSTER_HOST
+    rabbitmq-plugins enable rabbitmq_mqtt
+    rabbitmq-plugins enable rabbitmq_web_mqtt
     rabbitmqctl start_app
 fi
 
