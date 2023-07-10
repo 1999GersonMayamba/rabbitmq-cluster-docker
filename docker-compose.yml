@@ -7,6 +7,7 @@ services:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
       - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_DEFAULT_VHOST}
+    restart: always
     volumes:
       - ./.erlang.cookie:/var/lib/rabbitmq/.erlang.cookie
       - ./cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
@@ -17,8 +18,13 @@ services:
     hostname: rabbitmq2
     depends_on:
       - rabbitmq1
+    ulimits:
+     nofile:
+      soft: "65535"
+      hard: "65535"
     environment:
       - JOIN_CLUSTER_HOST=rabbitmq1
+    restart: always
     volumes:
       - ./.erlang.cookie:/var/lib/rabbitmq/.erlang.cookie
       - ./cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
@@ -29,8 +35,13 @@ services:
     hostname: rabbitmq3
     depends_on:
       - rabbitmq1
+    ulimits:
+     nofile:
+      soft: "65535"
+      hard: "65535"
     environment:
       - JOIN_CLUSTER_HOST=rabbitmq1
+    restart: always
     volumes:
       - ./.erlang.cookie:/var/lib/rabbitmq/.erlang.cookie
       - ./cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
@@ -40,6 +51,7 @@ services:
     image: haproxy:1.7
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    restart: always
     depends_on:
       - rabbitmq1
       - rabbitmq2
