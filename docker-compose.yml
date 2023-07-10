@@ -3,6 +3,10 @@ services:
   rabbitmq1:
     image: rabbitmq:3-management
     hostname: rabbitmq1
+    ulimits:
+     nofile:
+      soft: 65535
+      hard: 65535
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
@@ -20,8 +24,8 @@ services:
       - rabbitmq1
     ulimits:
      nofile:
-      soft: "65535"
-      hard: "65535"
+      soft: 65535
+      hard: 65535
     environment:
       - JOIN_CLUSTER_HOST=rabbitmq1
     restart: always
@@ -37,8 +41,8 @@ services:
       - rabbitmq1
     ulimits:
      nofile:
-      soft: "65535"
-      hard: "65535"
+      soft: 65535
+      hard: 65535
     environment:
       - JOIN_CLUSTER_HOST=rabbitmq1
     restart: always
